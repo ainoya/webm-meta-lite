@@ -1,8 +1,9 @@
 # webm-meta-lite
 
+A lightweight, functional TypeScript library for parsing WebM metadata.
+
 [![npm version](https://badge.fury.io/js/webm-meta-lite.svg)](https://www.npmjs.com/package/webm-meta-lite)
 
-A lightweight, functional TypeScript library for parsing WebM metadata.
 
 ## Features
 
