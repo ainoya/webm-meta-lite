@@ -1,14 +1,14 @@
 import { createBlobReader } from "./io/reader.js";
 import { scanHeader, scanCues, scanTail } from "./core/scanner.js";
-import { WebmMeta } from "./types.js";
+import { Reader, WebmMeta } from "./types.js";
 
 /**
  * Parses a WebM file (Blob) and returns its metadata.
- * @param source The WebM Blob to parse
+ * @param source The WebM Blob or Reader to parse
  * @returns The parsed WebmMeta object
  */
-export const parseWebm = async (source: Blob): Promise<WebmMeta> => {
-  const reader = createBlobReader(source);
+export const parseWebm = async (source: Blob | Reader): Promise<WebmMeta> => {
+  const reader = "read" in source ? source : createBlobReader(source);
   const fileSize = reader.getSize();
 
   // 1. Header Scan (Required)

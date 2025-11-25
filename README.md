@@ -47,6 +47,19 @@ const metadata = await parseWebm(blob);
 console.log(metadata);
 ```
 
+### Reading from URL (S3, etc.)
+
+To read a file from a URL efficiently (using HTTP Range Requests), use `createFetchReader`. This is ideal for large files stored on S3 or other cloud storage.
+
+```typescript
+import { parseWebm, createFetchReader } from "webm-meta-lite";
+
+const url = "https://example.com/large-video.webm";
+const reader = await createFetchReader(url);
+const metadata = await parseWebm(reader);
+console.log(metadata);
+```
+
 ### Output Example
 
 ```json

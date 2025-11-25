@@ -31,3 +31,30 @@ export const createBufferReader = (buffer: Uint8Array): Reader => {
     },
   };
 };
+/**
+ * Creates a Reader from a URL using HTTP Range Requests.
+ * Useful for reading large files from S3 or other HTTP servers without downloading the whole file.
+ * @param url The source URL
+ * @returns A Promise that resolves to a Reader instance
+ */
+export const createFetchReader = async (url: string): Promise<Reader> => {
+  const head = await fetch(url, { method: "HEAD" });
+  const sizeStr = head.headers.get("content-length");
+  if (!sizeStr) {
+    throw new Error("Content-Length header missing");
+  }
+  const size = parseInt(sizeStr, 10);
+
+  return {
+    getSize: () => size,
+    read: async (offset: number, length: number): Promise<Uint8Array> => {
+      const response = await fetch(url, {
+        headers: {
+          Range: `bytes=${offset}-${offset + length - 1}`,
+        },
+      });
+      const buffer = await response.arrayBuffer();
+      return new Uint8Array(buffer);
+    },
+  };
+};
