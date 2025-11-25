@@ -7,9 +7,9 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     }
   },
   "files": [
@@ -31,7 +31,7 @@
     "@types/node": "^24.10.1",
     "typescript": "^5.9.3",
     "vite": "^7.2.4",
-    "vite-plugin-dts": "^4.3.0",
+    "vite-plugin-dts": "^4.5.4",
     "vitest": "^4.0.13"
   }
 }

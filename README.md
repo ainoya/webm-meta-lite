@@ -1,5 +1,7 @@
 # webm-meta-lite
 
+[![npm version](https://badge.fury.io/js/webm-meta-lite.svg)](https://www.npmjs.com/package/webm-meta-lite)
+
 A lightweight, functional TypeScript library for parsing WebM metadata.
 
 ## Features
@@ -30,6 +32,19 @@ fileInput.addEventListener('change', async (event) => {
     console.log(metadata);
   }
 });
+```
+
+### Node.js Usage
+
+In Node.js (v19.8.0+), you can use `openAsBlob` to efficiently read files without loading the entire file into memory.
+
+```typescript
+import { openAsBlob } from "node:fs";
+import { parseWebm } from "webm-meta-lite";
+
+const blob = await openAsBlob("./video.webm");
+const metadata = await parseWebm(blob);
+console.log(metadata);
 ```
 
 ### Output Example
