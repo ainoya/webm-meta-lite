@@ -2,8 +2,16 @@
   "name": "webm-meta-lite",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "files": [
     "dist"
   ],
@@ -11,7 +19,8 @@
     "webm-meta-lite": "./dist/cli.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "vite build",
+    "type-check": "tsc --noEmit",
     "test": "vitest run"
   },
   "keywords": [],
@@ -21,6 +30,8 @@
   "devDependencies": {
     "@types/node": "^24.10.1",
     "typescript": "^5.9.3",
+    "vite": "^5.4.11",
+    "vite-plugin-dts": "^4.3.0",
     "vitest": "^4.0.13"
   }
 }
