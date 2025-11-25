@@ -63,4 +63,4 @@ fileInput.addEventListener('change', async (event) => {
 
 ## License
 
-ISC
+MIT
