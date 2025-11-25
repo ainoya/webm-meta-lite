@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Production
+dist/
+build/
+
+# Misc
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+.vscode/
+coverage/
+
+# Local
+sample.webm
+
