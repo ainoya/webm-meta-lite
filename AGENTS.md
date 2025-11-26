@@ -15,6 +15,7 @@ Adhere to a strict **Functional Programming** paradigm.
 
   * **No `let` or `var`:** Use `const` for all variable declarations.
   * **No `any`:** Strict type safety is required.
+  * **No `null`:** Avoid using `null`. Use optional properties (`?`) or `undefined` instead.
   * **No Type Assertions:** Avoid using `as` to force types. Rely on type narrowing, type guards, and proper inference.
 
 ### 2\. Data Structures & Abstractions
