@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>webm-meta-lite Demo</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>webm-meta-lite Demo</h1>
+      
+      <section class="card">
+        <h2>Recorder</h2>
+        <div class="controls">
+          <button id="startBtn">Start Recording</button>
+          <button id="stopBtn" disabled>Stop Recording</button>
+        </div>
+        <div id="recordingStatus" class="status">Ready</div>
+        <audio id="audioPreview" controls></audio>
+        <div id="downloadLinkContainer"></div>
+        <h3>Metadata</h3>
+        <pre id="recorderMetadata" class="metadata-display"></pre>
+      </section>
+
+      <section class="card">
+        <h2>File Analyzer</h2>
+        <div class="controls">
+          <input type="file" id="fileInput" accept="audio/webm, video/webm" />
+        </div>
+        <h3>Metadata</h3>
+        <pre id="fileMetadata" class="metadata-display"></pre>
+      </section>
+    </div>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

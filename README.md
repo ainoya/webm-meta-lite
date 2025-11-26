@@ -66,7 +66,7 @@ console.log(metadata);
 
 ```json
 {
-  "duration": 120.5,
+  "durationMilliSeconds": 120500,
   "fileSize": 15000000,
   "mimeType": "video/webm; codecs=\"vp9, opus\"",
   "info": {

@@ -6,7 +6,7 @@ export type Reader = {
 
 // Parsing result (Immutable object)
 export type WebmMeta = {
-  readonly duration?: number; // Seconds
+  readonly durationMilliSeconds?: number; // Milliseconds
   readonly fileSize: number;
   readonly mimeType: string;        // "video/webm; codecs=..."
   readonly info: WebmInfo;
@@ -17,7 +17,7 @@ export type WebmInfo = {
   readonly timecodeScale: number;   // Default 1,000,000
   readonly muxingApp?: string;
   readonly writingApp?: string;
-  readonly duration?: number;       // Raw Duration value
+  readonly durationMilliSeconds?: number;       // Duration in Milliseconds
 };
 
 export type WebmTrack = {

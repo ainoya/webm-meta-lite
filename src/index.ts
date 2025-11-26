@@ -44,21 +44,19 @@ export const parseWebm = async (source: Blob | Reader): Promise<WebmMeta> => {
   };
 
   // Duration Resolution Pipeline
-  let duration = headerResult.info.duration 
-    ? (headerResult.info.duration * headerResult.info.timecodeScale) / 1e9 
-    : undefined;
+  let durationMilliSeconds = headerResult.info.durationMilliSeconds;
 
   // 2. Cues Scan (If Header didn't have duration)
-  if (duration === undefined && headerResult.cuesOffset !== undefined) {
-    duration = await scanCues(reader, headerResult.cuesOffset, headerResult.info.timecodeScale);
+  if (durationMilliSeconds === undefined && headerResult.cuesOffset !== undefined) {
+    durationMilliSeconds = await scanCues(reader, headerResult.cuesOffset, headerResult.info.timecodeScale);
   }
 
   // 3. Tail Scan (If still no duration)
-  if (duration === undefined) {
-    duration = await scanTail(reader, fileSize, headerResult.info.timecodeScale);
+  if (durationMilliSeconds === undefined) {
+    durationMilliSeconds = await scanTail(reader, fileSize, headerResult.info.timecodeScale);
   }
 
-  return { ...resultBase, duration };
+  return { ...resultBase, durationMilliSeconds };
 };
 
 export * from "./types.js";

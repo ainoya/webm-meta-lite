@@ -197,7 +197,8 @@ const parseInfo = async (reader: Reader, offset: number, size: number, info: any
     } else if (id === IDS.DURATION) {
       const data = await reader.read(content, elSize);
       const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
-      info.duration = readFloat(view, 0, elSize);
+      const rawDuration = readFloat(view, 0, elSize);
+      info.durationMilliSeconds = (rawDuration * info.timecodeScale) / 1e6;
     } else if (id === IDS.MUXING_APP) {
       const data = await reader.read(content, elSize);
       const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
@@ -355,7 +356,7 @@ export const scanCues = async (reader: Reader, cuesOffset: number, timecodeScale
     current += subHeaderSize + subSize;
   }
   
-  return (maxTime * timecodeScale) / 1e9;
+  return (maxTime * timecodeScale) / 1e6;
 };
 
 const parseCuePoint = async (reader: Reader, offset: number, size: number): Promise<number> => {
@@ -510,5 +511,5 @@ export const scanTail = async (reader: Reader, fileSize: number, timecodeScale: 
   
   if (!found) return;
   
-  return (maxTimecode * timecodeScale) / 1e9;
+  return (maxTimecode * timecodeScale) / 1e6;
 };

@@ -24,6 +24,8 @@
   },
   "scripts": {
     "build": "vite build",
+    "build:demo": "vite build -c vite.demo.config.ts",
+    "dev:demo": "vite -c vite.demo.config.ts",
     "type-check": "tsc --noEmit",
     "test": "vitest run"
   },

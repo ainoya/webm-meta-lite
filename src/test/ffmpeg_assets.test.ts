@@ -16,9 +16,9 @@ describe('FFmpeg Generated Assets Tests', () => {
     const meta = await parseWebm(blob);
 
     // Should have duration in Info
-    expect(meta.info.duration).toBeDefined();
-    // Duration should be approx 10s
-    expect(meta.duration).toBeCloseTo(10.0, 1);
+    expect(meta.info.durationMilliSeconds).toBeDefined();
+    // Duration should be approx 10s = 10000ms
+    expect(meta.durationMilliSeconds).toBeCloseTo(10000.0, -2); // Allow some variance
     
     // Check tracks
     expect(meta.tracks).toHaveLength(2); // Video + Audio
@@ -35,11 +35,11 @@ describe('FFmpeg Generated Assets Tests', () => {
     const meta = await parseWebm(blob);
 
     // Should NOT have duration in Info
-    expect(meta.info.duration).toBeUndefined();
+    expect(meta.info.durationMilliSeconds).toBeUndefined();
     
     // Should calculate duration from Tail Scan
     // The user said "Duration: N/A" in ffprobe, but our lib should find it.
-    expect(meta.duration).toBeCloseTo(10.0, 1);
+    expect(meta.durationMilliSeconds).toBeCloseTo(10000.0, -2);
   });
 
   it('3. Audio Only WebM', async () => {
@@ -51,7 +51,7 @@ describe('FFmpeg Generated Assets Tests', () => {
     expect(meta.tracks[0].codecId).toBe('A_OPUS');
     
     // Duration should be approx 10s
-    expect(meta.duration).toBeCloseTo(10.0, 1);
+    expect(meta.durationMilliSeconds).toBeCloseTo(10000.0, -2);
   });
 
   it('4. Truncated WebM (Resync Logic)', async () => {
@@ -61,9 +61,9 @@ describe('FFmpeg Generated Assets Tests', () => {
     // Should handle truncated file gracefully
     // Duration might be slightly less than 10s, or exactly 10s if the last cluster keyframe is before the cut.
     // The cut is 10KB.
-    expect(meta.duration).toBeGreaterThan(0);
-    expect(meta.duration).toBeLessThanOrEqual(10.0);
+    expect(meta.durationMilliSeconds).toBeGreaterThan(0);
+    expect(meta.durationMilliSeconds).toBeLessThanOrEqual(10000.0);
     // It should be reasonably close to 10s
-    expect(meta.duration).toBeGreaterThan(9.0);
+    expect(meta.durationMilliSeconds).toBeGreaterThan(9000.0);
   });
 });

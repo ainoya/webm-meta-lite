@@ -107,7 +107,7 @@ describe('scanner', () => {
       const result = await scanHeader(reader);
       
       expect(result.info.timecodeScale).toBe(1000000);
-      expect(result.info.duration).toBe(1000.0);
+      expect(result.info.durationMilliSeconds).toBe(1000.0);
       expect(result.info.muxingApp).toBe("TestApp");
       expect(result.tracks).toHaveLength(1);
       expect(result.tracks[0].codecId).toBe("V_VP8");
@@ -132,8 +132,8 @@ describe('scanner', () => {
       // Offset 0 because reader contains only Cues
       const result = await scanCues(reader, 0, 1000000);
       
-      // 500 * 1000000 / 1e9 = 0.5
-      expect(result).toBe(0.5);
+      // 500 * 1000000 / 1e6 = 500
+      expect(result).toBe(500.0);
     });
   });
   
@@ -158,8 +158,8 @@ describe('scanner', () => {
       
       const result = await scanTail(reader, file.length, 1000000);
       
-      // 2000 * 1000000 / 1e9 = 2.0
-      expect(result).toBe(2.0);
+      // 2000 * 1000000 / 1e6 = 2000.0
+      expect(result).toBe(2000.0);
     });
 
     it('should handle Unknown Size Cluster with Timecode 0', async () => {

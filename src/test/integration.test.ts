@@ -26,8 +26,8 @@ describe('Integration Tests', () => {
     const blob = new Blob([webm as unknown as BlobPart]);
     const meta = await parseWebm(blob);
     
-    expect(meta.info.duration).toBe(5000.0);
-    expect(meta.duration).toBe(5.0); // 5000 * 1000000 / 1e9
+    expect(meta.info.durationMilliSeconds).toBe(5000.0);
+    expect(meta.durationMilliSeconds).toBe(5000.0); // 5000ms
     expect(meta.tracks).toHaveLength(1);
     expect(meta.tracks[0].codecId).toBe("V_VP9");
   });
@@ -60,8 +60,8 @@ describe('Integration Tests', () => {
     const blob = new Blob([webm as unknown as BlobPart]);
     const meta = await parseWebm(blob);
     
-    expect(meta.info.duration).toBeUndefined();
-    expect(meta.duration).toBe(2.0); // Derived from Cues: 2000ms
+    expect(meta.info.durationMilliSeconds).toBeUndefined();
+    expect(meta.durationMilliSeconds).toBe(2000.0); // Derived from Cues: 2000ms
   });
 
   it('Scenario 3: Truncated/Resync (No Duration, No Cues)', async () => {
@@ -93,9 +93,9 @@ describe('Integration Tests', () => {
     const blob = new Blob([fileContent as unknown as BlobPart]);
     const meta = await parseWebm(blob);
     
-    expect(meta.info.duration).toBeUndefined();
+    expect(meta.info.durationMilliSeconds).toBeUndefined();
     // Tail scan should find the Cluster at 6500
-    expect(meta.duration).toBe(6.5);
+    expect(meta.durationMilliSeconds).toBe(6500.0);
   });
   
   it('Scenario 4: Audio Only (Audio Track)', async () => {
@@ -114,6 +114,6 @@ describe('Integration Tests', () => {
     
     expect(meta.tracks[0].trackType).toBe(2);
     expect(meta.tracks[0].codecId).toBe("A_OPUS");
-    expect(meta.duration).toBe(12.0);
+    expect(meta.durationMilliSeconds).toBe(12000.0);
   });
 });
