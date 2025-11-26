@@ -1,5 +1,7 @@
 # Changelog
 
+## [v1.0.6](https://github.com/ainoya/webm-meta-lite/compare/v1.0.5...v1.0.6) - 2025-11-26
+
 ## [v1.0.5](https://github.com/ainoya/webm-meta-lite/compare/v1.0.4...v1.0.5) - 2025-11-26
 
 ## [v1.0.4](https://github.com/ainoya/webm-meta-lite/compare/v1.0.3...v1.0.4) - 2025-11-26
