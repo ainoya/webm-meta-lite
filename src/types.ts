@@ -6,7 +6,7 @@ export type Reader = {
 
 // Parsing result (Immutable object)
 export type WebmMeta = {
-  readonly duration: number | null; // Seconds
+  readonly duration?: number; // Seconds
   readonly fileSize: number;
   readonly mimeType: string;        // "video/webm; codecs=..."
   readonly info: WebmInfo;
@@ -40,7 +40,7 @@ export type ScanContext = {
   readonly fileSize: number;
   // Important offset positions discovered during parsing
   readonly offsets: {
-    readonly cues: number | null;    // If found from SeekHead
+    readonly cues?: number;    // If found from SeekHead
     readonly segment: number;        // Start position of Segment element
   };
 };

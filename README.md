@@ -8,6 +8,7 @@ A lightweight, functional TypeScript library for parsing WebM metadata.
 ## Features
 
 - **Fast & Lightweight**: Scans only necessary parts of the file (Header, Cues, Tail) to extract metadata.
+- **Robust**: Handles files with missing duration (e.g., from `MediaRecorder`) by scanning the file tail.
 - **Browser & Node.js Compatible**: Works with standard `Blob` objects.
 - **Zero Runtime Dependencies**: Pure TypeScript implementation.
 

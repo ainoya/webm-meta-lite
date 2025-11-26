@@ -26,7 +26,7 @@ const readElementHeader = async (reader: Reader, offset: number): Promise<{ id: 
 
 // --- Header Scanner ---
 
-export const scanHeader = async (reader: Reader): Promise<{ info: WebmInfo; tracks: WebmTrack[]; cuesOffset: number | null }> => {
+export const scanHeader = async (reader: Reader): Promise<{ info: WebmInfo; tracks: WebmTrack[]; cuesOffset?: number }> => {
   const fileSize = reader.getSize();
   // Read first 64KB or file size
   const scanLimit = Math.min(fileSize, 64 * 1024);
@@ -66,7 +66,7 @@ export const scanHeader = async (reader: Reader): Promise<{ info: WebmInfo; trac
   
   const info: any = { timecodeScale: 1000000 };
   const tracks: WebmTrack[] = [];
-  let cuesOffset: number | null = null;
+  let cuesOffset: number | undefined;
   
   // We scan until we find Info and Tracks.
   // We also look for SeekHead to find Cues.
@@ -323,12 +323,12 @@ const parseAudio = async (reader: Reader, offset: number, size: number) => {
 
 // --- Cues Scanner ---
 
-export const scanCues = async (reader: Reader, cuesOffset: number, timecodeScale: number): Promise<number | null> => {
+export const scanCues = async (reader: Reader, cuesOffset: number, timecodeScale: number): Promise<number | undefined> => {
   // Read Cues element
   const { id, size, headerSize } = await readElementHeader(reader, cuesOffset);
   
   if (id !== IDS.CUES) {
-    return null;
+    return;
   }
   
   // We want the last CuePoint
@@ -383,12 +383,12 @@ const parseCuePoint = async (reader: Reader, offset: number, size: number): Prom
 
 // --- Tail Scanner ---
 
-export const scanTail = async (reader: Reader, fileSize: number, timecodeScale: number): Promise<number | null> => {
+export const scanTail = async (reader: Reader, fileSize: number, timecodeScale: number): Promise<number | undefined> => {
   const SCAN_SIZE = 2 * 1024 * 1024; // 2MB
   const startOffset = Math.max(0, fileSize - SCAN_SIZE);
   const length = fileSize - startOffset;
   
-  if (length <= 0) return null;
+  if (length <= 0) return;
   
   const buffer = await reader.read(startOffset, length);
   const view = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
@@ -508,7 +508,7 @@ export const scanTail = async (reader: Reader, fileSize: number, timecodeScale: 
     }
   }
   
-  if (!found) return null;
+  if (!found) return;
   
   return (maxTimecode * timecodeScale) / 1e9;
 };

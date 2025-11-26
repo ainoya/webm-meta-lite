@@ -36,7 +36,7 @@ export const parseWebm = async (source: Blob | Reader): Promise<WebmMeta> => {
   }
 
   const resultBase: WebmMeta = {
-    duration: null,
+    // duration: undefined, // Optional
     fileSize,
     mimeType,
     info: headerResult.info,
@@ -46,15 +46,15 @@ export const parseWebm = async (source: Blob | Reader): Promise<WebmMeta> => {
   // Duration Resolution Pipeline
   let duration = headerResult.info.duration 
     ? (headerResult.info.duration * headerResult.info.timecodeScale) / 1e9 
-    : null;
+    : undefined;
 
   // 2. Cues Scan (If Header didn't have duration)
-  if (duration === null && headerResult.cuesOffset !== null) {
+  if (duration === undefined && headerResult.cuesOffset !== undefined) {
     duration = await scanCues(reader, headerResult.cuesOffset, headerResult.info.timecodeScale);
   }
 
   // 3. Tail Scan (If still no duration)
-  if (duration === null) {
+  if (duration === undefined) {
     duration = await scanTail(reader, fileSize, headerResult.info.timecodeScale);
   }
 
