@@ -12,6 +12,14 @@ A lightweight, functional TypeScript library for parsing WebM metadata.
 - **Browser & Node.js Compatible**: Works with standard `Blob` objects.
 - **Zero Runtime Dependencies**: Pure TypeScript implementation.
 
+## Demo
+
+Try the demo here: [https://ainoya.github.io/webm-meta-lite/](https://ainoya.github.io/webm-meta-lite/)
+
+- **Record & Analyze**: Record audio directly in the browser and view its metadata.
+- **File Upload**: Upload existing WebM files to inspect their structure and metadata.
+
+
 ## Installation
 
 ```bash
