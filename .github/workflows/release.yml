@@ -6,7 +6,6 @@ on:
       - main
 
 permissions:
-  id-token: write
   contents: write
   pull-requests: write
 
@@ -48,6 +47,7 @@ jobs:
         with:
           node-version-file: '.node-version'
           registry-url: 'https://registry.npmjs.org'
+      - run: npm install -g npm@latest
       - run: npm ci
       - run: npm run build
       - run: npm publish --provenance
