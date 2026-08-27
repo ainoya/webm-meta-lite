@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.0.9](https://github.com/ainoya/webm-meta-lite/compare/v1.0.8...v1.0.9) - 2026-08-27
+
+- Update actions/configure-pages action to v6 by @renovate[bot] in https://github.com/ainoya/webm-meta-lite/pull/23
+- chore(deps): bump the npm_and_yarn group across 1 directory with 4 updates by @dependabot[bot] in https://github.com/ainoya/webm-meta-lite/pull/19
+
 ## [v1.0.8](https://github.com/ainoya/webm-meta-lite/compare/v1.0.7...v1.0.8) - 2026-08-27
 
 - Report which method resolved the duration by @ainoya in https://github.com/ainoya/webm-meta-lite/pull/20
