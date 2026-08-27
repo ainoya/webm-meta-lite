@@ -79,3 +79,42 @@ audio {
   width: 100%;
   margin-bottom: 1rem;
 }
+
+.notice p,
+.notice li {
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.notice code {
+  background: #f1f5f9;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  font-size: 0.85rem;
+}
+
+.duration-source {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: #64748b;
+}
+
+.duration-source:not(:empty) {
+  border-left: 3px solid var(--border-color);
+  padding: 0.5rem 0.75rem;
+}
+
+.duration-source.exact {
+  border-left-color: #16a34a;
+  color: #15803d;
+}
+
+.duration-source.estimated {
+  border-left-color: #d97706;
+  color: #b45309;
+}
+
+.duration-source.unresolved {
+  border-left-color: #dc2626;
+  color: #b91c1c;
+}

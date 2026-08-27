@@ -75,6 +75,7 @@ console.log(metadata);
 ```json
 {
   "durationMilliSeconds": 120500,
+  "durationSource": "header",
   "fileSize": 15000000,
   "mimeType": "video/webm; codecs=\"vp9, opus\"",
   "info": {
@@ -98,6 +99,31 @@ console.log(metadata);
   ]
 }
 ```
+
+## Where each field comes from
+
+Most fields are reported exactly as stored in the file; only the duration is resolved by
+the library.
+
+| Field | Source |
+| --- | --- |
+| `info.*`, `tracks[*]` | Read from the file header as-is (Info / Tracks elements) |
+| `fileSize` | The size of the source Blob or file, not a value stored in the file |
+| `mimeType` | Assembled by this library from the track codec IDs |
+| `durationMilliSeconds` | Resolved through the Header → Cues → Tail pipeline below |
+| `durationSource` | Which of the three methods produced the duration |
+
+### Duration resolution
+
+The three methods are tried in order, stopping at the first one that yields a value.
+`durationSource` reports the one that produced `durationMilliSeconds`, so callers can tell an
+exact value from an estimate. It is `undefined` when no method found a duration.
+
+| `durationSource` | Method | Accuracy |
+| --- | --- | --- |
+| `"header"` | The `Duration` element of the Info header | Exact. Absent in files written by `MediaRecorder` and other live muxers |
+| `"cues"` | The last `CueTime` of the Cues index | Estimate: points at the last indexed cluster, not at the end of the last frame |
+| `"tail"` | The last Cluster/Block timecode found by scanning the file tail | Estimate: excludes the play time of the last frame itself |
 
 ## License
 

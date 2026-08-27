@@ -9,6 +9,39 @@
   <body>
     <div class="container">
       <h1>webm-meta-lite Demo</h1>
+
+      <section class="card notice">
+        <h2>How to read the results</h2>
+        <p>
+          Most of the fields below are reported <strong>exactly as stored in the WebM file</strong>:
+          <code>info</code> (timecodeScale, muxingApp, writingApp) and <code>tracks</code> are read
+          straight from the file header, without any post-processing. Two fields are produced by the
+          library rather than read from the file: <code>fileSize</code> is the size of the file itself,
+          and <code>mimeType</code> is assembled from the codec IDs of the tracks.
+        </p>
+        <p>
+          <code>durationMilliSeconds</code> is the only <strong>resolved</strong> value. Up to three
+          methods are tried in order, stopping at the first one that yields a value:
+        </p>
+        <ol>
+          <li>
+            <strong>Header</strong> &mdash; the <code>Duration</code> element of the file header.
+            Exact, but missing in files written by <code>MediaRecorder</code> and other live muxers.
+          </li>
+          <li>
+            <strong>Cues</strong> &mdash; the last entry of the Cues index. An estimate: it points at
+            the last indexed cluster, not at the end of the last frame.
+          </li>
+          <li>
+            <strong>Tail</strong> &mdash; the last Cluster/Block timecode found by scanning the end of
+            the file. Also an estimate: it excludes the play time of the last frame itself.
+          </li>
+        </ol>
+        <p>
+          The method that produced the value is reported as <code>durationSource</code> and is shown
+          above each result below.
+        </p>
+      </section>
       
       <section class="card">
         <h2>Recorder</h2>
@@ -20,6 +53,7 @@
         <audio id="audioPreview" controls></audio>
         <div id="downloadLinkContainer"></div>
         <h3>Metadata</h3>
+        <div id="recorderDurationSource" class="duration-source"></div>
         <pre id="recorderMetadata" class="metadata-display"></pre>
       </section>
 
@@ -29,6 +63,7 @@
           <input type="file" id="fileInput" accept="audio/webm, video/webm" />
         </div>
         <h3>Metadata</h3>
+        <div id="fileDurationSource" class="duration-source"></div>
         <pre id="fileMetadata" class="metadata-display"></pre>
       </section>
     </div>

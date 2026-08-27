@@ -1,4 +1,5 @@
 import { parseWebm } from '../src/index';
+import type { DurationSource, WebmMeta } from '../src/types';
 
 const startBtn = document.getElementById('startBtn') as HTMLButtonElement;
 const stopBtn = document.getElementById('stopBtn') as HTMLButtonElement;
@@ -6,8 +7,56 @@ const recordingStatus = document.getElementById('recordingStatus') as HTMLDivEle
 const audioPreview = document.getElementById('audioPreview') as HTMLAudioElement;
 const downloadLinkContainer = document.getElementById('downloadLinkContainer') as HTMLDivElement;
 const recorderMetadata = document.getElementById('recorderMetadata') as HTMLPreElement;
+const recorderDurationSource = document.getElementById('recorderDurationSource') as HTMLDivElement;
 const fileInput = document.getElementById('fileInput') as HTMLInputElement;
 const fileMetadata = document.getElementById('fileMetadata') as HTMLPreElement;
+const fileDurationSource = document.getElementById('fileDurationSource') as HTMLDivElement;
+
+// How each duration resolution method is presented in the UI.
+const DURATION_SOURCE_LABELS: Record<DurationSource, { readonly method: string; readonly accuracy: string; readonly note: string }> = {
+  header: {
+    method: 'Header',
+    accuracy: 'exact',
+    note: 'read from the Duration element of the file header',
+  },
+  cues: {
+    method: 'Cues',
+    accuracy: 'estimated',
+    note: 'derived from the last entry of the Cues index',
+  },
+  tail: {
+    method: 'Tail scan',
+    accuracy: 'estimated',
+    note: 'derived from the last Cluster/Block timecode found at the end of the file',
+  },
+};
+
+// Renders which of the three methods resolved the duration. Every other field of the
+// result is reported as stored in the file, so only this one needs an explanation.
+const renderDurationSource = (element: HTMLDivElement, metadata: WebmMeta): void => {
+  const source = metadata.durationSource;
+  if (source === undefined) {
+    element.className = 'duration-source unresolved';
+    element.textContent = 'Duration: not resolved — none of the three methods (Header, Cues, Tail) found a value.';
+    return;
+  }
+
+  const { method, accuracy, note } = DURATION_SOURCE_LABELS[source];
+  element.className = `duration-source ${accuracy}`;
+  element.textContent = `Duration resolved by: ${method} (${accuracy}) — ${note}. All other fields below are read from the file as-is.`;
+};
+
+const renderMetadata = (metadataElement: HTMLPreElement, sourceElement: HTMLDivElement, metadata: WebmMeta): void => {
+  metadataElement.textContent = JSON.stringify(metadata, null, 2);
+  renderDurationSource(sourceElement, metadata);
+};
+
+// Shows a plain message (progress or error) in place of a parse result.
+const renderMessage = (metadataElement: HTMLPreElement, sourceElement: HTMLDivElement, message: string): void => {
+  metadataElement.textContent = message;
+  sourceElement.className = 'duration-source';
+  sourceElement.textContent = '';
+};
 
 let mediaRecorder: MediaRecorder | null = null;
 let chunks: Blob[] = [];
@@ -41,9 +90,9 @@ startBtn.addEventListener('click', async () => {
       // Parse metadata
       try {
         const metadata = await parseWebm(blob);
-        recorderMetadata.textContent = JSON.stringify(metadata, null, 2);
+        renderMetadata(recorderMetadata, recorderDurationSource, metadata);
       } catch (err) {
-        recorderMetadata.textContent = `Error parsing metadata: ${err}`;
+        renderMessage(recorderMetadata, recorderDurationSource, `Error parsing metadata: ${err}`);
       }
 
       chunks = [];
@@ -74,12 +123,12 @@ fileInput.addEventListener('change', async (e) => {
   const file = (e.target as HTMLInputElement).files?.[0];
   if (!file) return;
 
-  fileMetadata.textContent = 'Parsing...';
+  renderMessage(fileMetadata, fileDurationSource, 'Parsing...');
 
   try {
     const metadata = await parseWebm(file);
-    fileMetadata.textContent = JSON.stringify(metadata, null, 2);
+    renderMetadata(fileMetadata, fileDurationSource, metadata);
   } catch (err) {
-    fileMetadata.textContent = `Error parsing metadata: ${err}`;
+    renderMessage(fileMetadata, fileDurationSource, `Error parsing metadata: ${err}`);
   }
 });

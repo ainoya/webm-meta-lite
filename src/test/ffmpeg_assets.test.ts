@@ -19,6 +19,7 @@ describe('FFmpeg Generated Assets Tests', () => {
     expect(meta.info.durationMilliSeconds).toBeDefined();
     // Duration should be approx 10s = 10000ms
     expect(meta.durationMilliSeconds).toBeCloseTo(10000.0, -2); // Allow some variance
+    expect(meta.durationSource).toBe('header');
     
     // Check tracks
     expect(meta.tracks).toHaveLength(2); // Video + Audio
@@ -40,6 +41,7 @@ describe('FFmpeg Generated Assets Tests', () => {
     // Should calculate duration from Tail Scan
     // The user said "Duration: N/A" in ffprobe, but our lib should find it.
     expect(meta.durationMilliSeconds).toBeCloseTo(10000.0, -2);
+    expect(meta.durationSource).toBe('tail');
   });
 
   it('3. Audio Only WebM', async () => {
@@ -52,6 +54,7 @@ describe('FFmpeg Generated Assets Tests', () => {
     
     // Duration should be approx 10s
     expect(meta.durationMilliSeconds).toBeCloseTo(10000.0, -2);
+    expect(meta.durationSource).toBe('header');
   });
 
   it('4. Truncated WebM (Resync Logic)', async () => {

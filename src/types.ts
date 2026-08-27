@@ -4,11 +4,18 @@ export type Reader = {
   readonly read: (offset: number, length: number) => Promise<Uint8Array>;
 };
 
+// Which method resolved `durationMilliSeconds`:
+// - "header": the Duration element stored in the Info header (exact)
+// - "cues": the last CueTime of the Cues index (estimate)
+// - "tail": the last Cluster/Block timecode found by scanning the file tail (estimate)
+export type DurationSource = "header" | "cues" | "tail";
+
 // Parsing result (Immutable object)
 export type WebmMeta = {
   readonly durationMilliSeconds?: number; // Milliseconds
+  readonly durationSource?: DurationSource; // undefined when the duration could not be resolved
   readonly fileSize: number;
-  readonly mimeType: string;        // "video/webm; codecs=..."
+  readonly mimeType: string;        // "video/webm; codecs=..." (assembled from track codec IDs)
   readonly info: WebmInfo;
   readonly tracks: WebmTrack[];
 };
