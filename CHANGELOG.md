@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.0.11](https://github.com/ainoya/webm-meta-lite/compare/v1.0.10...v1.0.11) - 2026-11-01
+
+- chore(renovate): batch updates into one monthly PR by @ainoya in https://github.com/ainoya/webm-meta-lite/pull/41
+
 ## [v1.0.10](https://github.com/ainoya/webm-meta-lite/compare/v1.0.9...v1.0.10) - 2026-10-27
 
 - Update dependency vite to v7.3.7 [SECURITY] by @renovate[bot] in https://github.com/ainoya/webm-meta-lite/pull/37
